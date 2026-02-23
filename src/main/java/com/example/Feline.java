@@ -1,14 +1,35 @@
 package com.example;
 
+import java.util.Arrays;
 import java.util.List;
 
-public interface Felines extends Animal, Predator {
+public class FelineImpl extends Animal implements Feline, Predator {
 
-    String getFamily();
+    @Override
+    public List<String> eatMeat() throws Exception {
+        return getFood("Хищник");
+    }
 
-    int getKittens();
+    @Override
+    public String getFamily() {
+        return "Кошачьи";
+    }
 
-    int getKittens(int kittensCount);
+    @Override
+    public int getKittens() {
+        return getKittens(1);
+    }
 
-    List<String> getFood(String predatorType) throws Exception;
+    @Override
+    public int getKittens(int kittensCount) {
+        return kittensCount;
+    }
+
+    @Override
+    public List<String> getFood(String predatorType) throws Exception {
+        if ("Хищник".equals(predatorType)) {
+            return Arrays.asList("Мясо", "Птица", "Рыба");
+        }
+        return List.of();
+    }
 }

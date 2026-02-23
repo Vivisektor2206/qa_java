@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
+import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
-public class FelineImplTest {
+public class FelineTest {
 
-    private FelineImpl feline;
-    private int inputKittens;
-    private int expectedKittens;
+    private Feline feline;
+    private final int inputKittens;
+    private final int expectedKittens;
 
     @Parameters(name = "getKittens({0}) = {1}")
     public static Collection<Object[]> data() {
@@ -24,18 +24,19 @@ public class FelineImplTest {
                 {0, 0},
                 {1, 1},
                 {3, 3},
-                {5, 5}
+                {5, 5},
+                {100, 100}
         });
     }
 
-    public FelineImplTest(int input, int expected) {
+    public FelineTest(int input, int expected) {
         this.inputKittens = input;
         this.expectedKittens = expected;
     }
 
     @Before
     public void setUp() {
-        feline = new FelineImpl();
+        feline = new Feline();
     }
 
     @Test
@@ -70,4 +71,23 @@ public class FelineImplTest {
         List<String> meat = feline.eatMeat();
         assertEquals(Arrays.asList("Мясо", "Птица", "Рыба"), meat);
     }
+
+    @Test
+    public void testMultipleCallsToEatMeatReturnSameList() throws Exception {
+        List<String> firstCall = feline.eatMeat();
+        List<String> secondCall = feline.eatMeat();
+
+        assertEquals(firstCall, secondCall);
+        assertNotSame(firstCall, secondCall); // разные объекты
+    }
+
+    @Test
+    public void testGetFoodReturnsNewListInstanceEachTime() throws Exception {
+        List<String> firstCall = feline.getFood("Хищник");
+        List<String> secondCall = feline.getFood("Хищник");
+
+        assertEquals(firstCall, secondCall);
+        assertNotSame(firstCall, secondCall); // разные объекты в памяти
+    }
+
 }
