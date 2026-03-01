@@ -40,23 +40,37 @@ public class FelineTest {
         assertEquals(Arrays.asList("Мясо", "Птица", "Рыба"), meat);
     }
 
+
     @Test
-    public void testMultipleCallsToEatMeatReturnSameList() throws Exception {
+    public void testMultipleCallsToEatMeatReturnListsWithSameContent() throws Exception {
         Feline feline = new Feline();
         List<String> firstCall = feline.eatMeat();
         List<String> secondCall = feline.eatMeat();
-
         assertEquals(firstCall, secondCall);
-        assertNotSame(firstCall, secondCall); // разные объекты
     }
 
     @Test
-    public void testGetFoodReturnsNewListInstanceEachTime() throws Exception {
+    public void testMultipleCallsToEatMeatReturnDifferentObjectInstances() throws Exception {
+        Feline feline = new Feline();
+        List<String> firstCall = feline.eatMeat();
+        List<String> secondCall = feline.eatMeat();
+        assertNotSame(firstCall, secondCall);
+    }
+
+    @Test
+    public void testGetFoodReturnsListsWithSameContentOnMultipleCalls() throws Exception {
         Feline feline = new Feline();
         List<String> firstCall = feline.getFood("Хищник");
         List<String> secondCall = feline.getFood("Хищник");
-
         assertEquals(firstCall, secondCall);
-        assertNotSame(firstCall, secondCall); // разные объекты в памяти
     }
+
+    @Test
+    public void testGetFoodReturnsDifferentListInstancesOnMultipleCalls() throws Exception {
+        Feline feline = new Feline();
+        List<String> firstCall = feline.getFood("Хищник");
+        List<String> secondCall = feline.getFood("Хищник");
+        assertNotSame(firstCall, secondCall);
+    }
+
 }
