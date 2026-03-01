@@ -2,7 +2,7 @@ package com.example;
 
 import java.util.List;
 
-public interface Feline {
+public interface FelineInt {
     String getFamily();
 
     int getKittens();

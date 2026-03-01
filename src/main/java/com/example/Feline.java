@@ -3,7 +3,7 @@ package com.example;
 import java.util.Arrays;
 import java.util.List;
 
-public class FelineImpl extends Animal implements Feline, Predator {
+public class Feline extends Animal implements FelineInt, Predator {
 
     @Override
     public List<String> eatMeat() throws Exception {

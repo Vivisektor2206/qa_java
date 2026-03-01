@@ -21,39 +21,59 @@ public class CatTest {
     }
 
     @Test
-    public void testGetSound() {
+    public void testGetSound_ReturnsMeow() {
         assertEquals("Мяу", cat.getSound());
     }
 
     @Test
-    public void testGetFood_DelegatesToPredator() throws Exception {
+    public void testGetFood_DelegatesToPredatorAndReturnsExpectedFood() throws Exception {
         List<String> expectedFood = Arrays.asList("Мясо", "Птица");
         when(felineMock.eatMeat()).thenReturn(expectedFood);
         List<String> actualFood = cat.getFood();
         assertEquals(expectedFood, actualFood);
+    }
+
+    @Test
+    public void testGetFood_CallsEatMeatOnPredator() throws Exception {
+        when(felineMock.eatMeat()).thenReturn(List.of("Мясо"));
+        cat.getFood();
         verify(felineMock).eatMeat();
     }
 
     @Test(expected = Exception.class)
-    public void testGetFood_WhenPredatorThrowsException() throws Exception {
+    public void testGetFood_WhenPredatorThrowsException_ThrowsException() throws Exception {
         when(felineMock.eatMeat()).thenThrow(new Exception("Ошибка питания"));
         cat.getFood();
     }
+
     @Test
-    public void testGetFood_EmptyListFromPredator() throws Exception {
+    public void testGetFood_ReturnsEmptyListWhenPredatorReturnsEmpty() throws Exception {
         when(felineMock.eatMeat()).thenReturn(List.of());
         List<String> actualFood = cat.getFood();
         assertTrue(actualFood.isEmpty());
+    }
+
+    @Test
+    public void testGetFood_CallsEatMeatOncePerInvocation() throws Exception {
+        when(felineMock.eatMeat()).thenReturn(List.of("Мясо"));
+        cat.getFood();
         verify(felineMock, times(1)).eatMeat();
     }
 
     @Test
-    public void testGetFood_MultipleCalls() throws Exception {
+    public void testGetFood_MultipleCallsReturnsSameData() throws Exception {
         List<String> expectedFood = List.of("Мясо");
         when(felineMock.eatMeat()).thenReturn(expectedFood);
         List<String> firstCall = cat.getFood();
-        List<String> secondCall = cat.getFood();
         assertEquals(expectedFood, firstCall);
+    }
+
+    @Test
+    public void testGetFood_SecondCallReturnsSameData() throws Exception {
+        List<String> expectedFood = List.of("Мясо");
+        when(felineMock.eatMeat()).thenReturn(expectedFood);
+        cat.getFood(); // первый вызов
+        List<String> secondCall = cat.getFood();
         assertEquals(expectedFood, secondCall);
     }
 }
